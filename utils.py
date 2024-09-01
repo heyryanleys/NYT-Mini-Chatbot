@@ -1,9 +1,14 @@
 import requests
 from bs4 import BeautifulSoup
+from twilio.rest import Client
+from dotenv import load_dotenv
+import os
 import re
 import json
 from datetime import datetime
 from models import User, Score
+
+load_dotenv()
 
 def add_user_if_not_exists(session, user_id, username):
     user = session.query(User).filter_by(user_id=user_id).first()
@@ -63,3 +68,20 @@ def save_scores_to_db(session, data):
             print(f"Saved score for {username}: {solve_time}, Rank: {rank}")
         else:
             print(f"Skipping user {username} with no solve time or not found in DB.")
+
+def sendTextMessage():
+    
+    # Pick a message from the DB
+    message = "Hey!"
+    account_sid = os.getenv('TWILIO_ACCOUNT_SID')
+    auth_token = os.getenv('TWILIO_AUTH')
+    client = Client(account_sid, auth_token)
+    
+    message = client.messages.create(
+        body="Join Earth's mightiest heroes. Like Kevin Bacon.",
+        from_=os.getenv('TWILIO_PHONE_NUMBER'),
+        to=os.getenv('TEST_TWILO_SEND_TO')
+    )
+
+    print(message.body)
+

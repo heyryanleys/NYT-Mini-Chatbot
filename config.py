@@ -1,5 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from models import Base  # Import Base from your models
 from dotenv import load_dotenv
 import os
 
@@ -25,3 +26,6 @@ engine = create_engine(DATABASE_URL)
 
 # Create a configured "Session" class
 Session = sessionmaker(bind=engine)
+
+# Create all tables
+Base.metadata.create_all(engine)

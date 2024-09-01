@@ -1,0 +1,13 @@
+NYT_COOKIE = ''
+
+DB_USER = 'postgres'
+DB_PASSWORD = ''
+DB_HOST = ''
+DB_PORT = '5432'
+DB_NAME = 'mini_brains'
+
+TWILIO_ACCOUNT_SID = ''
+TWILIO_AUTH = ''
+
+TWILO_NUMBER=""
+TEST_TWILO_SEND_TO=""

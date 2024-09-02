@@ -1,10 +1,10 @@
 from utils.nyt import get_daily_scores, get_leaderboard_users
-from cron.cron_utils import check_for_birthday, get_multipliers_by_date
+from cron.cron_utils import get_multipliers_by_date
 from utils.database import save_users_to_db, save_scores_to_db, save_multiplier_to_score
 from models import DailyMultiplier, User, Score
 from sqlalchemy.sql import extract
 import random
-from datetime import datetime, timedelta
+from datetime import datetime
 
 def fetch_users_and_scores(session, headers):
     """Fetches users and scores and saves them to the database, applying multipliers as necessary."""
@@ -25,9 +25,6 @@ def apply_multiplier(session):
 
     # Todays' scores
     todays_scores = session.query(Score).filter_by(date=datetime.now().date()).all()
-
-    # Get tomorrow's scores from the DB
-    # tomorrows_scores = session.query(Score).filter_by(date=datetime.now().date() + timedelta(days=1)).all()
 
     # Get today's multipliers
     todays_multipliers = get_multipliers_by_date(session)

@@ -1,7 +1,8 @@
 import requests
 from sqlalchemy.sql import func
 from models import DailyMessage, MonthlyMessage, YearlyMessage
-from utils.messages import format_message, get_current_month_and_year, get_monthly_winner, get_monthly_scores, get_yearly_winner, get_daily_winner, get_daily_loser
+from utils.messages import format_daily_message, get_current_month_and_year, format_monthly_message, format_yearly_message
+from utils.database import get_monthly_scores, get_yearly_scores, get_daily_scores
 import config
 from datetime import datetime
 
@@ -18,31 +19,33 @@ def send_groupme_message(message):
 
 def send_groupme_daily_message(session):
     today = datetime.now().date()
+    daily_scores = get_daily_scores(session, today)
     daily_message = session.query(DailyMessage).order_by(func.random()).first().message
-    winner_name = get_daily_winner(session, today)
-    loser_name = get_daily_loser(session, today)
 
-    message = format_message(daily_message, winner_name, loser_name)
+    message = format_daily_message(daily_message, daily_scores)
     send_groupme_message(message)
 
 def send_groupme_monthly_message(session):
     current_month, current_year = get_current_month_and_year()
-    monthly_winner = get_monthly_winner(session, current_month, current_year)
     
-    formatted_scores = get_monthly_scores(session, current_month, current_year)
+    monthly_scores = get_monthly_scores(session, current_month, current_year)
     monthly_message = session.query(MonthlyMessage).order_by(func.random()).first().message
 
-    message = format_message(monthly_message, monthly_winner, None)
-    send_groupme_message(f"{message}\n\nScores:\n{formatted_scores}")
-
-def send_groupme_yearly_message(session):
-    yearly_winner = get_yearly_winner(session)
-    yearly_message = session.query(YearlyMessage).order_by(func.random()).first().message
-
-    message = format_message(yearly_message, yearly_winner, None)
+    message = format_monthly_message(monthly_message, monthly_scores)
     send_groupme_message(message)
 
-def send_birthday_message(users):
+def send_groupme_yearly_message(session):
+    current_month, current_year = get_current_month_and_year()
+    print(current_month, current_year)
+    yearly_scores = get_yearly_scores(session, current_year)
+
+    yearly_scores = get_yearly_scores(session, current_year)
+    yearly_message = session.query(YearlyMessage).order_by(func.random()).first().message
+
+    message = format_yearly_message(yearly_message, yearly_scores)
+    send_groupme_message(message)
+
+def send_groupme_birthday_message(users):
     if len(users) > 1: 
         if len(users) == 2:
             # For two users, join their names with "and"
@@ -59,5 +62,5 @@ def send_birthday_message(users):
 
     send_groupme_message(message)
 
-def send_daily_double_message():
+def send_groupme_daily_double_message():
     send_groupme_message("Today is a Daily Double! All scores are worth double points!")

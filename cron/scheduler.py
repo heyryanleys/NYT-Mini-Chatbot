@@ -1,14 +1,9 @@
 from apscheduler.schedulers.blocking import BlockingScheduler
 from datetime import datetime
 
-from utils.groupme import send_groupme_daily_message, send_groupme_monthly_message, send_groupme_yearly_message, send_daily_double_message
+from utils.groupme import send_groupme_daily_message, send_groupme_monthly_message, send_groupme_yearly_message, send_groupme_daily_double_message
 from cron.cron_utils import get_last_day_of_month, get_last_day_of_year, check_for_birthday_messages, check_for_multiplier_messages
 from cron.tasks import fetch_users_and_scores, create_daily_double_multiplier, create_birthday_multipliers
-
-def schedule_multipliers(scheduler, session):
-    """Schedules the Daily Double day, with a random day each month."""
-    scheduler.add_job(lambda: create_birthday_multipliers(session), 'cron', day=1, hour=0, minute=0, timezone='US/Eastern')
-    scheduler.add_job(lambda: create_daily_double_multiplier(session), 'cron', day='1', hour=0, minute=0, timezone='US/Eastern')
     
 def schedule_tasks(session, headers):
     scheduler = BlockingScheduler()
@@ -23,6 +18,11 @@ def schedule_tasks(session, headers):
     schedule_monthly_and_yearly_tasks(scheduler, session)
 
     scheduler.start()
+
+def schedule_multipliers(scheduler, session):
+    """Schedules the Daily Double day, with a random day each month."""
+    scheduler.add_job(lambda: create_birthday_multipliers(session), 'cron', day=1, hour=0, minute=0, timezone='US/Eastern')
+    scheduler.add_job(lambda: create_daily_double_multiplier(session), 'cron', day='1', hour=0, minute=0, timezone='US/Eastern')
 
 def schedule_daily_tasks(scheduler, session, headers):
     scheduler.add_job(lambda: check_for_birthday_messages(session), 'cron', day_of_week='mon-sun', hour=9, minute=0, timezone='US/Eastern')

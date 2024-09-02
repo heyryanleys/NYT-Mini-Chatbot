@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from sqlalchemy.sql import extract
 from models import User, DailyMultiplier
-from utils.groupme import send_birthday_message, send_daily_double_message
+from utils.groupme import send_groupme_birthday_message, send_groupme_daily_double_message
 
 def get_last_day_of_month(year, month):
     """Returns the last day of the given month and year."""
@@ -32,11 +32,10 @@ def check_for_birthday_messages(session):
     """Checks for birthday messages and sends them if necessary."""
     birthday_users = check_for_birthday(session)
     if birthday_users:
-        send_birthday_message(birthday_users)
+        send_groupme_birthday_message(birthday_users)
 
 def check_for_multiplier_messages(session):
     """Checks for multipliers and sends messages if necessary."""
     # Need to change this to do more than just daily double
-    if session.query(DailyMultiplier).filter_by(datetime.now().date()).first() is not None:
-        send_daily_double_message()
-
+    if session.query(DailyMultiplier).filter(DailyMultiplier.date == datetime.now().date()).first() is not None:
+        send_groupme_daily_double_message()

@@ -18,7 +18,6 @@ def fetch_users_and_scores(session, headers):
     if scores_data:
         save_scores_to_db(session, scores_data)
         apply_multiplier(session)
-    
 
 def apply_multiplier(session):
     """Applies the appropriate multiplier based on priority: Birthday > Daily Double."""
@@ -58,15 +57,11 @@ def apply_multiplier(session):
         
 
     session.commit()
-                
-            
-                
-        
-        
 
-# def apply_daily_double(session):
-#     """Applies the Daily Double multiplier to today's scores."""
-#     save_multiplier_to_score(session, multiplier=2)
+def has_multiplier_for_today(session, date):
+    """Checks if a multiplier already exists for the given date."""
+    return session.query(DailyMultiplier).filter_by(date=date).first()
+                
 
 def create_daily_double_multiplier(session):
     """Picks a random day in the month to be the Daily Double day, trying up to 10 times."""
@@ -86,11 +81,10 @@ def create_daily_double_multiplier(session):
         attempts += 1
 
 def create_birthday_multipliers(session):
-    print('h');
     """Creates multipliers for users' birthdays."""
     users = session.query(User).filter(extract('month', User.birthday) == datetime.now().month).all()
     print(users)
     for user in users:
-        birthday_multiplier = DailyMultiplier(date=user.birthday, multiplier=3, multiplier_type='Birthday', user=user.id)
+        birthday_multiplier = DailyMultiplier(date=user.birthday, multiplier=3, multiplier_type='Birthday', user_id=user.id)
         session.add(birthday_multiplier)
         session.commit()

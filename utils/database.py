@@ -1,9 +1,10 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from models import Base
+from models import Base, Score, User
 import config
 from datetime import datetime
 from models import User, Score
+from sqlalchemy.sql import func, extract
 
 def create_session():
     DATABASE_URL = config.DATABASE_URL
@@ -45,3 +46,45 @@ def add_user_if_not_exists(session, user_id, username):
         user = User(user_id=user_id, username=username)
         session.add(user)
         session.commit()
+
+def get_daily_scores(session, date):
+    result = session.query(
+        User.user_id,
+        User.username,
+        func.sum(Score.points).label('total_points')
+    ).join(Score, User.id == Score.user_id) \
+     .filter(Score.date == date) \
+     .group_by(User.user_id, User.username) \
+     .order_by(func.sum(Score.points).desc()) \
+     .all()
+
+    return result
+
+def get_monthly_scores(session, month, year):
+    result = session.query(
+        User.user_id,
+        User.username,
+        func.sum(Score.points).label('total_points')
+    ).join(Score, User.id == Score.user_id) \
+     .filter(
+         extract('year', Score.date) == year,
+         extract('month', Score.date) == month
+     ) \
+     .group_by(User.user_id, User.username) \
+     .order_by(func.sum(Score.points).desc()) \
+     .all()
+
+    return result
+
+def get_yearly_scores(session, year):
+    result = session.query(
+        User.user_id,
+        User.username,
+        func.sum(Score.points).label('total_points')
+    ).join(Score, User.id == Score.user_id) \
+     .filter(extract('year', Score.date) == year) \
+     .group_by(User.user_id, User.username) \
+     .order_by(func.sum(Score.points).desc()) \
+     .all()
+
+    return result

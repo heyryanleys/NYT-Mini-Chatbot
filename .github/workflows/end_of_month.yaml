@@ -35,5 +35,4 @@ jobs:
 
       - name: Run end of month scripts
         run: |
-          export PYTHONPATH=$PYTHONPATH:$(pwd)
           python scripts/end_of_month_scripts.py

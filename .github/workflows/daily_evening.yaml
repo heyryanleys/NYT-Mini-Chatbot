@@ -35,5 +35,4 @@ jobs:
 
       - name: Run daily evening scripts
         run: |
-          export PYTHONPATH=$PYTHONPATH:$(pwd)
           python scripts/daily_evening_scripts.py

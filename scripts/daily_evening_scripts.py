@@ -1,3 +1,8 @@
+import sys
+import os
+# Add the parent directory to PYTHONPATH
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from config import Session, headers
 
 from cron.tasks import fetch_users_and_scores

@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./logo_mini.png" alt="Logo" width="500px">
+  <img src="./mini_brains_header.png" alt="Logo" width="900px">
 </div>
 
 # NYT Mini Crossword Chatbot

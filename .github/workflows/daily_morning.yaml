@@ -34,4 +34,5 @@ jobs:
 
       - name: Run daily morning scripts
         run: |
+          export PYTHONPATH=$PYTHONPATH:$(pwd)
           python scripts/daily_morning_scripts.py

@@ -10,7 +10,7 @@ This app uses GitHub Actions to automatically check the leaderboard every day an
 
 We have also incorporated some custom rules, such as earning 3x points if you win on your birthday and a monthly Daily Double where the winner gets double points.
 
-Because the NYT doesn't provide an open API for leaderboard data, this app requires you to find your NYT-S cookie from the NYT website. Big thanks to [@SinaKhalili](https://github.com/SinaKhalili) for discovering that workaround. It's a bit complex and may not work indefinitely, but instructions on obtaining the cookie are provided below.
+Because the NYT doesn't provide an open API for leaderboard data, this app requires you to find your `NYT-S` cookie from the NYT website. Big thanks to [@SinaKhalili](https://github.com/SinaKhalili) for discovering that workaround. It's a bit complex and may not work indefinitely, but instructions on obtaining the cookie are provided below.
 
 ## Technologies Used
 
@@ -26,7 +26,7 @@ To run this project, you will need:
 - **Python 3.x**: Ensure you have Python installed on your machine.
 - **PostgreSQL Database**: Set up a PostgreSQL database to store your application's data.
 - **GroupMe Bot**: Create a GroupMe bot to send messages.
-- **NYT Crossword Cookie**: Obtain your NYT cookie by logging into the NYT games website, inspecting the page, and navigating to Application > Cookies to find the `NYT-S` cookie.
+- **NYT Crossword Cookie**: Obtain your NYT cookie by logging into the [NYT games website](https://www.nytimes.com/crosswords), inspecting the page, and navigating to Application > Cookies to find the `NYT-S` cookie.
 
 ## Environment Variables
 

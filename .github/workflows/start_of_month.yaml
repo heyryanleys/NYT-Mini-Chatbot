@@ -3,6 +3,7 @@ name: Start Of Month Scripts
 on:
   schedule:
     - cron: "1 4 1 * *" # Run at 12:01 AM ET on the 1st of every month during DST
+  workflow_dispatch: # Allows manual triggering
 
 jobs:
   start-of-month-scripts:

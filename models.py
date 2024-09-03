@@ -30,16 +30,6 @@ class Score(Base):
     
     user = relationship('User', back_populates='scores')
 
-class MonthlyWinner(Base):
-    __tablename__ = 'MonthlyWinners'
-    
-    id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey('Users.id'), nullable=False)
-    wins = Column(Integer, nullable=False)
-    month = Column(Date, nullable=False)
-    
-    user = relationship('User')
-
 class DailyMessage(Base):
     __tablename__ = 'DailyMessages'
     

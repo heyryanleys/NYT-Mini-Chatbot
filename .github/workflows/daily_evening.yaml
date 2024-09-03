@@ -1,0 +1,27 @@
+name: Daily Evening Scripts
+
+on:
+  schedule:
+    - cron: "0 2 * * 1-6" # Run Mon-Sat at 10:00 PM ET during DST (2:00 AM UTC)
+    - cron: "0 22 * * 0" # Run Sun at 6:00 PM ET during DST (10:00 PM UTC)
+
+jobs:
+  daily-evening-scripts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run daily evening scripts
+        run: |
+          python scripts/daily_evening_scripts.py

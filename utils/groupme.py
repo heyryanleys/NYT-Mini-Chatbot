@@ -22,7 +22,13 @@ def send_groupme_daily_message(session):
     daily_scores = get_daily_scores(session, today)
     daily_message = session.query(DailyMessage).order_by(func.random()).first().message
 
-    message = format_daily_message(daily_message, daily_scores)
+    if (len(daily_scores) == 0):
+        message = "No competitors today? Sad... Get it together, people!"
+    else:
+        message = format_daily_message(daily_message, daily_scores)
+
+    
+
     send_groupme_message(message)
 
 def send_groupme_monthly_message(session):
@@ -32,7 +38,11 @@ def send_groupme_monthly_message(session):
     
     monthly_message = session.query(MonthlyMessage).order_by(func.random()).first().message
 
-    message = format_monthly_message(monthly_message, monthly_scores)
+    if (len(monthly_scores) == 0):
+        message = "No competitors this month? It's like you don't even care!"
+    else:
+        message = format_monthly_message(monthly_message, monthly_scores)
+
     send_groupme_message(message)
 
 def send_groupme_yearly_message(session):
@@ -43,7 +53,11 @@ def send_groupme_yearly_message(session):
     yearly_scores = get_yearly_scores(session, last_year)
     yearly_message = session.query(YearlyMessage).order_by(func.random()).first().message
 
-    message = format_yearly_message(yearly_message, yearly_scores)
+    if (len(yearly_scores) == 0):
+        message = "I can't believe it! No one competed all year! 😱"
+    else:
+        message = format_yearly_message(yearly_message, yearly_scores)
+
     send_groupme_message(message)
 
 def send_groupme_birthday_message(users):

@@ -71,12 +71,12 @@ def send_groupme_birthday_message(users):
             usernames = ", ".join(user.username for user in users[:-1])
             usernames += f", and {users[-1].username}"
 
-        message = f"Happy Birthday {usernames}! 🎉🎂 \n\nIf one of you wins today, it's worth triple points!"
+        message = f"Happy Birthday {usernames}! 🎉🎂 \nIf one of you wins today, it's worth triple points!"
     else: 
         user = users[0]
-        message = f"Happy Birthday, {user.username}! 🎉🎂\n\nIf you win today, it's worth triple points!"
+        message = f"Happy Birthday, {user.username}! 🎉🎂\nIf you win today, it's worth triple points!"
 
-    send_groupme_message(message)
+    send_groupme_message(message, "https://i.groupme.com/1378x776.png.c1898eaad0ea4e80af773be311d8c8fd")
 
 def send_groupme_daily_double_message():
     send_groupme_message("🚨 Today is a Daily Double! The winner of today earns double the points! 🚨", "https://i.groupme.com/2388x1246.png.6592f889a1d143fbb714cbff5b1f4040")

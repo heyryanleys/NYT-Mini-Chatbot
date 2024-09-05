@@ -1,5 +1,6 @@
 from datetime import datetime
 from sqlalchemy.sql import func, extract
+from dateutil.relativedelta import relativedelta
 
 from models import Score, User
 
@@ -44,11 +45,10 @@ def format_yearly_message(template, yearly_scores):
     return template + "\n\nScores:\n" + formatted_scores
 
 
-def get_current_month_and_year():
-    first_day_of_current_month = datetime.now().replace(day=1) 
-    current_month = first_day_of_current_month.month
-    current_year = first_day_of_current_month.year
-    return current_month, current_year
+def get_last_month_and_year():
+    # Subtract one month from the current date
+    last_month_date = datetime.now() - relativedelta(months=1)
+    return last_month_date.month, last_month_date.year
 
 def get_daily_scores(session, date):
     result = session.query(

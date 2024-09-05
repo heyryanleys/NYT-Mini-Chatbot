@@ -1,7 +1,7 @@
 import requests
 from sqlalchemy.sql import func
 from models import DailyMessage, MonthlyMessage, YearlyMessage
-from utils.messages import format_daily_message, get_current_month_and_year, format_monthly_message, format_yearly_message
+from utils.messages import format_daily_message, get_last_month_and_year, format_monthly_message, format_yearly_message
 from utils.database import get_monthly_scores, get_yearly_scores, get_daily_scores
 import config
 from datetime import datetime
@@ -26,20 +26,21 @@ def send_groupme_daily_message(session):
     send_groupme_message(message)
 
 def send_groupme_monthly_message(session):
-    current_month, current_year = get_current_month_and_year()
+    last_month, last_year = get_last_month_and_year()
     
-    monthly_scores = get_monthly_scores(session, current_month, current_year)
+    monthly_scores = get_monthly_scores(session, last_month, last_year)
+    
     monthly_message = session.query(MonthlyMessage).order_by(func.random()).first().message
 
     message = format_monthly_message(monthly_message, monthly_scores)
     send_groupme_message(message)
 
 def send_groupme_yearly_message(session):
-    current_month, current_year = get_current_month_and_year()
-    print(current_month, current_year)
-    yearly_scores = get_yearly_scores(session, current_year)
-
-    yearly_scores = get_yearly_scores(session, current_year)
+    # Use the current year and subtract one
+    current_year = datetime.now().year
+    last_year = current_year - 1
+    
+    yearly_scores = get_yearly_scores(session, last_year)
     yearly_message = session.query(YearlyMessage).order_by(func.random()).first().message
 
     message = format_yearly_message(yearly_message, yearly_scores)

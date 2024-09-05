@@ -37,6 +37,7 @@ pydantic_core==2.18.4
 pyHS100==0.3.5.2
 PyJWT==2.9.0
 PySocks==1.7.1
+python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
 python-kasa @ git+https://github.com/python-kasa/python-kasa.git@4cf395483f7a8a51e47bc7ece150d2da26de57fe
 pytz==2024.1

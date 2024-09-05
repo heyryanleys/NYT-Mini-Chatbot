@@ -6,11 +6,12 @@ from utils.database import get_monthly_scores, get_yearly_scores, get_daily_scor
 import config
 from datetime import datetime
 
-def send_groupme_message(message):
+def send_groupme_message(message, picture=None):
     url = 'https://api.groupme.com/v3/bots/post'
     data = {
         "bot_id": config.bot_id,
-        "text": message
+        "text": message,
+        "picture_url": picture
     }
     response = requests.post(url, json=data)
     if response.status_code != 202:
@@ -78,4 +79,4 @@ def send_groupme_birthday_message(users):
     send_groupme_message(message)
 
 def send_groupme_daily_double_message():
-    send_groupme_message("Today is a Daily Double! All scores are worth double points!")
+    send_groupme_message("🚨 Today is a Daily Double! The winner of today earns double the points! 🚨", "https://i.groupme.com/2388x1246.png.6592f889a1d143fbb714cbff5b1f4040")

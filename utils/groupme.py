@@ -4,7 +4,7 @@ from models import DailyMessage, MonthlyMessage, YearlyMessage
 from utils.messages import format_daily_message, get_last_month_and_year, format_monthly_message, format_yearly_message
 from utils.database import get_monthly_scores, get_yearly_scores, get_daily_scores
 import config
-from datetime import datetime
+from datetime import datetime, timedelta
 
 def send_groupme_message(message, picture=None):
     url = 'https://api.groupme.com/v3/bots/post'
@@ -19,16 +19,15 @@ def send_groupme_message(message, picture=None):
         print(response.json())
 
 def send_groupme_daily_message(session):
-    today = datetime.now().date()
-    daily_scores = get_daily_scores(session, today)
+    # Subtract one day from today to get yesterday
+    yesterday = datetime.now().date() - timedelta(days=1)
+    daily_scores = get_daily_scores(session, yesterday)
     daily_message = session.query(DailyMessage).order_by(func.random()).first().message
 
-    if (len(daily_scores) == 0):
-        message = "No competitors today? Sad... Get it together, people!"
+    if len(daily_scores) == 0:
+        message = "No competitors yesterday? Sad... Get it together, people!"
     else:
         message = format_daily_message(daily_message, daily_scores)
-
-    
 
     send_groupme_message(message)
 
